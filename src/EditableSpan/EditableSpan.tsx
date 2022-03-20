@@ -1,20 +1,38 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useState} from 'react';
+import s from "./EditableSpan.module.css"
 
 type EditableSpanPropsType = {
     body: string
-    editMode: boolean
-    setEditMode: (editMode: boolean) => void
+    callback: (body: string) => void
 }
-export const EditableSpan = (props: EditableSpanPropsType) => {
 
-    const [body, setBody] = useState<string>(props.body)
+export const EditableSpan = React.memo(function(props: EditableSpanPropsType) {
+    let [editMode, setEditMode] = useState(false)
+    let [title, setTitle] = useState(props.body)
 
-    const changeNoteBody = (e: ChangeEvent<HTMLInputElement>) => setBody(e.currentTarget.value)
-    const closeEditMode = () => props.setEditMode(false)
+    const regularHashtag = /#[0-9A-Za-zА-Яа-яё]+/g
+    const hashtagArray = title.match(regularHashtag)
+    const host = "https://domain.com"
+    const findAllHashtag = () => {}
 
-    return <div>
-        {props.editMode
-            ? <input value={body} onChange={changeNoteBody} autoFocus onBlur={closeEditMode}/>
-            : <span>{body}</span>}
+    const activateEditMode = () => {
+        setEditMode(true);
+        setTitle(props.body);
+    }
+    const activateViewMode = () => {
+        setEditMode(false);
+        props.callback(title);
+    }
+    const changeNoteBody = (e: ChangeEvent<HTMLTextAreaElement>) => setTitle(e.currentTarget.value)
+
+    return <div className={s.editableSpanContainer}>
+        {editMode
+            ? <div className={s.textField}>
+                <textarea value={title} onChange={changeNoteBody} onBlur={activateViewMode}/>
+            </div>
+            : <div>
+                <div onDoubleClick={activateEditMode}>{props.body.replace(regularHashtag, (str: string) => str.slice(1))}</div>
+                <div>{hashtagArray && hashtagArray.map(h => <a href="" onClick={findAllHashtag}>{` ${h} `}</a>)}</div>
+            </div>}
     </div>
-}
+})

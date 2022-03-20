@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import './App.module.css';
+import {Notes} from "./Notes/Notes";
+import {AddNotes} from "./AddNotes/AddNotes";
+import {SearchNotes} from "./SearchNotes/SearchNotes";
+import {Header} from "./HeaderFooter/Header";
+import {Footer} from "./HeaderFooter/Footer";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export type noteType = {
+    'id': string,
+    'body': string,
+    'hashtag': string,
 }
 
+function App() {
+    const [notes, setNotes] = useState<noteType[]>([])
+
+    return <div className="App">
+        <Header/>
+        <AddNotes notes={notes} setNotes={setNotes}/>
+        <SearchNotes/>
+        <Notes notes={notes} setNotes={setNotes}/>
+        <Footer/>
+    </div>
+}
 export default App;
