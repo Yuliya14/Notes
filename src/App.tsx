@@ -9,7 +9,7 @@ import {Footer} from "./HeaderFooter/Footer";
 export type noteType = {
     'id': string,
     'body': string,
-    'hashtag': string,
+    'hashtag': Array<string>,
 }
 
 function App() {
@@ -18,9 +18,10 @@ function App() {
     return <div className="App">
         <Header/>
         <AddNotes notes={notes} setNotes={setNotes}/>
-        <SearchNotes/>
+        <SearchNotes notes={notes} setNotes={setNotes}/>
         <Notes notes={notes} setNotes={setNotes}/>
         <Footer/>
     </div>
 }
+
 export default App;

@@ -12,7 +12,7 @@ export const AddNotes = (props: AddNotesPropsType) => {
     const [error, setError] = useState<string | null>(null)
 
     const addNote = (e?: string) => {
-        const newNotes = {'id': v1(), 'body': noteBody, 'hashtag': ''}
+        const newNotes = {'id': v1(), 'body': noteBody, 'hashtag': []}
         if ((noteBody?.trim() === '' && e === 'Enter') || noteBody?.trim() === '') {
             setError('Enter some text')
             if (e && error !== null) setError(null)
