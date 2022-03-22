@@ -1,0 +1,45 @@
+.searchNotesContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+.searchContainer {
+    width: 300px;
+    vertical-align: middle;
+    white-space: nowrap;
+    position: relative;
+}
+.iconSearch {
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 10px;
+    z-index: 1;
+}
+input {
+    width: 300px;
+    height: 35px;
+    background: #2d2d2d;
+    border: none;
+    font-size: 10pt;
+    float: left;
+    color: #eaeaea;
+    padding-left: 50px;
+    border-radius: 5px;
+    margin: 5px;
+}
+input:hover, input:focus, input:active {
+    outline:none;
+    background: #eaeaea;
+    color: #2d2d2d;
+    border-radius: 5px;
+    box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+img {
+    height: 25px;
+    width: 25px;
+}
+button {
+    border-radius: 5px;
+    margin-left: 10px;
+}

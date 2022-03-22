@@ -1,5 +1,8 @@
 import React, {ChangeEvent, useState} from "react";
 import {noteType} from "../App";
+import {Notes} from "../Notes/Notes";
+import s from "./SearchNotes.module.css";
+import iconSearch from "../assets/premium-icon.png"
 
 type SearchNotesPropsType = {
     notes: noteType[]
@@ -7,14 +10,23 @@ type SearchNotesPropsType = {
 }
 export const SearchNotes = (props: SearchNotesPropsType) => {
     const [value, setValue] = useState<string>('')
+    const [all, setShowAll] = useState<boolean>(false)
 
-    const searchByHashtag = (e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value)
-    const filteredNotes =  props.notes.filter(n => n.hashtag.filter(h => h === value))
-    console.log(filteredNotes)
-    const  showNotes = () => props.setNotes(filteredNotes)
+    const searchNotes = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.currentTarget.value)
+        setShowAll(false)
+    }
+    const showAllNotes = () => setShowAll(true)
 
+    const filteredNotes = value.trim() !== '' ? props.notes.filter(n => n.body.toLowerCase().includes(value.toLowerCase())) : props.notes
     return <div>
-        <input type={'text'} placeholder={'Search by hashtag...'} onChange={searchByHashtag}/>
-        <button onClick={showNotes}>Search</button>
+       <div className={s.searchNotesContainer}>
+           <div className={s.searchContainer}>
+            <span className={s.iconSearch}><img src={iconSearch}/></span>
+            <input type={'search'} placeholder={'Search...'} onChange={searchNotes} disabled={props.notes.length === 0}/></div>
+           <button onClick={showAllNotes} disabled={filteredNotes === props.notes}>Show all</button>
+       </div>
+        <Notes allNotes={props.notes} notes={filteredNotes} setNotes={props.setNotes} all={all}
+               setShowAll={setShowAll}/>
     </div>
 }
