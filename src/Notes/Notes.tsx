@@ -17,17 +17,17 @@ export const Notes = (props: NotesPropsType) => {
     props.all ? notes = props.allNotes : notes = props.notes
 
     return <div>
-        {notes.length !== 0
+        {notes.length > 0
             ? <div className={s.notesContainer}>
                 {
-                    notes && notes.map(n => {
-                            const changeNoteBody = (newNoteBody: string, hashtag: any) => {
-                                const currentNote = props.allNotes.find(notes => notes.id === n.id) ? {
-                                    ...n,
-                                    body: newNoteBody,
-                                    hashtag
-                                } : n
-                                props.setNotes(props.allNotes.map(n => n.id === currentNote.id ? currentNote : n))
+                    notes.map(n => {
+                            const changeNoteBody = (newNoteBody: string, hashtag: Array<string>) => {
+                                    const currentNote = props.allNotes.find(notes => notes.id === n.id) ? {
+                                        ...n,
+                                        body: newNoteBody,
+                                        hashtag
+                                    } : n
+                                    props.setNotes(props.allNotes.map(n => n.id === currentNote.id ? currentNote : n))
                             }
                             const changeNote = () => {
                                 setChangeMode(!changeMode)

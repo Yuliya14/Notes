@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import s from "./EditableSpan.module.css"
-import {Hashtag} from "../Hashtag";
+import {Hashtag} from "../Hashtag/Hashtag";
 import {noteType} from "../App";
 
 type EditableSpanPropsType = {
@@ -13,7 +13,7 @@ type EditableSpanPropsType = {
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState(props.note.body)
-    const [hashtag, setHashtag] = useState<Array<string | RegExp>>(props.note.hashtag)
+    const [hashtag, setHashtag] = useState<Array<string>>(props.note.hashtag)
 
     const regularHashtag = /#[0-9A-Za-zА-Яа-яё]+/g
 
@@ -24,13 +24,18 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
     const activateViewMode = () => {
         setEditMode(false);
         props.callback(title, hashtag);
+        setHashtag(props.note.hashtag)
     }
+
     const changeNoteBody = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setTitle(e.currentTarget.value)
         const hashtagArray = e.currentTarget.value.match(regularHashtag)
-        if(hashtagArray) {
-            hashtagArray && setHashtag(hashtagArray)
-            props.setNotes([...props.notes.map(n => n.id === props.note.id ? {...props.note, hashtag: hashtagArray} : n)])
+        if (hashtagArray) {
+            setHashtag(hashtagArray)
+            props.setNotes([...props.notes.map(n => n.id === props.note.id ? {
+                ...props.note,
+                hashtag: hashtagArray
+            } : n)])
         }
     }
 
@@ -42,7 +47,6 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
             : <div>
                 <div
                     onDoubleClick={activateEditMode}>{props.note.body.replace(regularHashtag, (str: string) => str.slice(1))}</div>
-                <Hashtag note={props.note} hashtag={hashtag}/>
-            </div>}
+                {props.note.body.match(regularHashtag) && <Hashtag note={props.note} hashtag={hashtag} notes={props.notes} setNotes={props.setNotes}/>}</div>}
     </div>
 })

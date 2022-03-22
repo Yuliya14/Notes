@@ -4,6 +4,10 @@
     justify-content: center;
     margin: 10px;
 }
+.searchNotesContainer button {
+    border-radius: 5px;
+    margin-left: 10px;
+}
 .searchContainer {
     width: 300px;
     vertical-align: middle;
@@ -38,8 +42,4 @@ input:hover, input:focus, input:active {
 img {
     height: 25px;
     width: 25px;
-}
-button {
-    border-radius: 5px;
-    margin-left: 10px;
 }

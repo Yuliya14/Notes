@@ -16,14 +16,18 @@ export const SearchNotes = (props: SearchNotesPropsType) => {
         setValue(e.currentTarget.value)
         setShowAll(false)
     }
-    const showAllNotes = () => setShowAll(true)
+    const showAllNotes = () => {
+        setShowAll(true)
+        setValue('')
+    }
 
     const filteredNotes = value.trim() !== '' ? props.notes.filter(n => n.body.toLowerCase().includes(value.toLowerCase())) : props.notes
+
     return <div>
        <div className={s.searchNotesContainer}>
            <div className={s.searchContainer}>
             <span className={s.iconSearch}><img src={iconSearch}/></span>
-            <input type={'search'} placeholder={'Search...'} onChange={searchNotes} disabled={props.notes.length === 0}/></div>
+            <input type={'search'} placeholder={'Search...'} value={value} onChange={searchNotes} disabled={props.notes.length === 0}/></div>
            <button onClick={showAllNotes} disabled={filteredNotes === props.notes}>Show all</button>
        </div>
         <Notes allNotes={props.notes} notes={filteredNotes} setNotes={props.setNotes} all={all}
