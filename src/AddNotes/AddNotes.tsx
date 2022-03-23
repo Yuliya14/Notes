@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, useCallback, useEffect, useState} from "react";
 import {v1} from "uuid";
 import {noteType} from "../App";
 import s from "./AddNotes.module.scss"
@@ -12,12 +12,20 @@ export const AddNotes = React.memo((props: AddNotesPropsType) => {
     const [noteBody, setNoteBody] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
 
+    useEffect(() => {
+        let currentNotes = localStorage.getItem("notes")
+        if (currentNotes) {
+            props.setNotes(JSON.parse(currentNotes))
+        }
+    }, [])
+
     const addNote = useCallback((e?: string) => {
         const newNotes = {'id': v1(), 'body': noteBody, 'hashtag': []}
         if ((noteBody?.trim() === '' && e === 'Enter') || noteBody?.trim() === '') {
             setError('Enter some text')
             if (e && error !== null) setError(null)
         } else if (e === 'Enter' || !e) {
+            localStorage.setItem("notes", JSON.stringify([newNotes, ...props.notes]))
             props.setNotes([newNotes, ...props.notes])
             setNoteBody('')
             setError('')
