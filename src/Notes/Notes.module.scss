@@ -1,0 +1,24 @@
+.notesContainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 80%;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    .noteContainer {
+        background: #eaeaea;
+        width: 230px;
+        border-radius: 14px;
+        padding: 20px;
+        margin: 5px;
+        color: #2d2d2d;
+        word-wrap: break-word;
+        min-height: 130px;
+        .buttonContainer {
+            display: flex;
+            position: absolute;
+            margin: 0 auto;
+        }
+    }
+}
+

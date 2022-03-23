@@ -1,4 +1,4 @@
-import React, {ChangeEvent, MouseEvent} from "react";
+import React, {ChangeEvent, MouseEvent, useCallback} from "react";
 import {noteType} from "../App";
 
 type HashtagPropsType = {
@@ -8,7 +8,8 @@ type HashtagPropsType = {
     hashtag: Array<string | RegExp>
     searchNotes: (e: ChangeEvent<HTMLInputElement> | string) => void
 }
-export const Hashtag = (props: HashtagPropsType) => {
+export const Hashtag = React.memo((props: HashtagPropsType) => {
+    console.log('Hashtag')
 
     return <div>{props.hashtag && props.hashtag.map((h,index) => {
 
@@ -16,8 +17,7 @@ export const Hashtag = (props: HashtagPropsType) => {
             props.searchNotes(h.toString())
             e.preventDefault()
         }
-
         return <a href="" onClick={findAllHashtag} key={index}>{` ${h} `}</a>
     })}
     </div>
-}
+})

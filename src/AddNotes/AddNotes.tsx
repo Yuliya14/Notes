@@ -1,17 +1,18 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
 import {v1} from "uuid";
 import {noteType} from "../App";
-import s from "./AddNotes.module.css"
+import s from "./AddNotes.module.scss"
 
 type AddNotesPropsType = {
     notes: noteType[]
     setNotes: (notes: noteType[]) => void
 }
-export const AddNotes = (props: AddNotesPropsType) => {
+export const AddNotes = React.memo((props: AddNotesPropsType) => {
+    console.log('AddNotes')
     const [noteBody, setNoteBody] = useState<string>('')
     const [error, setError] = useState<string | null>(null)
 
-    const addNote = (e?: string) => {
+    const addNote = useCallback((e?: string) => {
         const newNotes = {'id': v1(), 'body': noteBody, 'hashtag': []}
         if ((noteBody?.trim() === '' && e === 'Enter') || noteBody?.trim() === '') {
             setError('Enter some text')
@@ -21,14 +22,14 @@ export const AddNotes = (props: AddNotesPropsType) => {
             setNoteBody('')
             setError('')
         }
-    }
-    const textareaChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => setNoteBody(e.currentTarget.value)
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    }, [ noteBody])
+    const textareaChangeHandler = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => setNoteBody(e.currentTarget.value), [])
+    const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (error !== null) setError(null)
         addNote(e.code)
-    }
+    }, [])
     const onClickHandler = () => addNote()
-    const setNullError = () => setError(null)
+    const setNullError = useCallback(() => setError(null), [])
     return <div className={s.addNotesContainer}>
         <div className={s.errorField}>
             <textarea value={noteBody} onChange={textareaChangeHandler} onKeyPress={onKeyPressHandler}
@@ -37,4 +38,4 @@ export const AddNotes = (props: AddNotesPropsType) => {
         </div>
         <button onClick={onClickHandler}>Add</button>
     </div>
-}
+})

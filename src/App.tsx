@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './App.module.css';
+import  s from './App.module.scss';
 import {AddNotes} from "./AddNotes/AddNotes";
 import {SearchNotes} from "./SearchNotes/SearchNotes";
 import {Header} from "./HeaderFooter/Header";
@@ -14,10 +14,10 @@ export type noteType = {
 function App() {
     const [notes, setNotes] = useState<noteType[]>([])
 
-    return <div className="App">
+    return <div className={s.App}>
         <Header/>
-        <AddNotes notes={notes} setNotes={setNotes}/>
-        <SearchNotes notes={notes} setNotes={setNotes}/>
+        <div className={s.main}><AddNotes notes={notes} setNotes={setNotes}/>
+            <SearchNotes notes={notes} setNotes={setNotes}/></div>
         <Footer/>
     </div>
 }

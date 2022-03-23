@@ -1,6 +1,6 @@
 import React from "react";
-import s from "./HeaderFooter.module.css"
+import s from "./HeaderFooter.module.scss"
 
 export const Header = () => {
-    return <header className={s.headerFooterContainer}>Notes</header>
+    return <header className={s.headerFooterContainer}>NOTES</header>
 }

@@ -1,7 +1,7 @@
-import React, {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useCallback, useState} from "react";
 import {noteType} from "../App";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
-import s from "../Notes/Notes.module.css"
+import s from "./Notes.module.scss"
 
 type NotesPropsType = {
     allNotes: noteType[]
@@ -11,7 +11,9 @@ type NotesPropsType = {
     setShowAll: (all: boolean) => void
     searchNotes: (e: ChangeEvent<HTMLInputElement> | string) => void
 }
-export const Notes = (props: NotesPropsType) => {
+export const Notes = React.memo((props: NotesPropsType) => {
+    console.log('Notes')
+
     const [changeMode, setChangeMode] = useState<boolean>(false)
 
     let notes: noteType[]
@@ -46,6 +48,6 @@ export const Notes = (props: NotesPropsType) => {
                         }
                     )}
             </div>
-            : <div>Add notes</div>}
+            : <div style={{textAlign: "center"}}>Add notes</div>}
     </div>
-}
+})

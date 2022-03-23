@@ -1,5 +1,5 @@
-import React, {ChangeEvent,FocusEvent, useState} from 'react';
-import s from "./EditableSpan.module.css"
+import React, {ChangeEvent, FocusEvent, useCallback, useState} from 'react';
+import s from "./EditableSpan.module.scss"
 import {Hashtag} from "../Hashtag/Hashtag";
 import {noteType} from "../App";
 
@@ -12,24 +12,27 @@ type EditableSpanPropsType = {
 }
 
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
+    console.log('EditableSpan')
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState(props.note.body)
     const [hashtag, setHashtag] = useState<Array<string>>(props.note.hashtag)
 
     const regularHashtag = /#[0-9A-Za-zА-Яа-яё]+/g
-
-    const activateEditMode = () => {
+    const textarea = document.getElementById("textarea")
+    if(textarea) {
+        const index = (textarea as HTMLTextAreaElement).value.split(' ')
+        index.map(i => i.includes('#') ? <span style={{color: 'red'}}>{i}</span> : i)
+    }
+    const activateEditMode = useCallback(() => {
         setEditMode(true)
         setTitle(props.note.body)
-    }
-
-    const activateViewMode = () => {
+    }, [props.note.body, editMode])
+    const activateViewMode = useCallback(() => {
         setEditMode(false)
         props.callback(title, hashtag)
         setHashtag(props.note.hashtag)
-    }
-
-    const changeNoteBody = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    }, [props.callback, props.note.hashtag, editMode])
+    const changeNoteBody = useCallback((e: ChangeEvent<HTMLTextAreaElement>) => {
         setTitle(e.currentTarget.value)
         const hashtagArray = e.currentTarget.value.match(regularHashtag)
         if (hashtagArray) {
@@ -39,14 +42,7 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
                 hashtag: hashtagArray
             } : n)])
         }
-    }
-
-        const textarea = document.getElementById("textarea");
-        if(textarea) {
-                const index = (textarea as HTMLTextAreaElement).value.split(' ');
-                console.log(index)
-                index.map(i => i.includes('#') ? <span style={{color: 'red'}}>{i}</span> : i)
-        }
+    }, [props.note, props.setNotes, title, hashtag])
 
     return <div className={s.editableSpanContainer}>
         {editMode
