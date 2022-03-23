@@ -12,8 +12,10 @@ export const SearchNotes = (props: SearchNotesPropsType) => {
     const [value, setValue] = useState<string>('')
     const [all, setShowAll] = useState<boolean>(false)
 
-    const searchNotes = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.currentTarget.value)
+    const searchNotes = (e: ChangeEvent<HTMLInputElement> | string) => {
+        if (typeof e !== "string") {
+            setValue(e.currentTarget.value)
+        } else setValue(e)
         setShowAll(false)
     }
     const showAllNotes = () => {
@@ -31,6 +33,6 @@ export const SearchNotes = (props: SearchNotesPropsType) => {
            <button onClick={showAllNotes} disabled={filteredNotes === props.notes}>Show all</button>
        </div>
         <Notes allNotes={props.notes} notes={filteredNotes} setNotes={props.setNotes} all={all}
-               setShowAll={setShowAll}/>
+               setShowAll={setShowAll} searchNotes={searchNotes}/>
     </div>
 }

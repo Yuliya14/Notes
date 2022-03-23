@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useState} from "react";
 import {noteType} from "../App";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import s from "../Notes/Notes.module.css"
@@ -9,6 +9,7 @@ type NotesPropsType = {
     setNotes: (notes: noteType[]) => void
     all: boolean
     setShowAll: (all: boolean) => void
+    searchNotes: (e: ChangeEvent<HTMLInputElement> | string) => void
 }
 export const Notes = (props: NotesPropsType) => {
     const [changeMode, setChangeMode] = useState<boolean>(false)
@@ -36,7 +37,7 @@ export const Notes = (props: NotesPropsType) => {
                             const deleteNote = () => props.setNotes(props.allNotes.filter(notes => notes.id !== n.id))
                             return <div className={s.noteContainer} key={n.id}>
                                 <EditableSpan note={n} callback={changeNoteBody} setNotes={props.setNotes}
-                                              notes={props.allNotes}/>
+                                              notes={props.allNotes} searchNotes={props.searchNotes}/>
                                 <div className={s.buttonContainer}>
                                     <button onClick={changeNote}>Change</button>
                                     <button onClick={deleteNote}>Delete</button>
