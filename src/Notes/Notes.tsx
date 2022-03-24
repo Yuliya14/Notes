@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useCallback} from "react";
 import {noteType} from "../App";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
 import s from "./Notes.module.scss"
+import {EditableSpan} from "../EditableSpan/EditableSpan";
 
 type NotesPropsType = {
     allNotes: noteType[]
