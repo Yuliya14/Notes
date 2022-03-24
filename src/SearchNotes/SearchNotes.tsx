@@ -9,7 +9,7 @@ type SearchNotesPropsType = {
     setNotes: (notes: noteType[]) => void
 }
 export const SearchNotes = React.memo((props: SearchNotesPropsType) => {
-    console.log('SearchNotes')
+
     const [value, setValue] = useState<string>('')
     const [all, setShowAll] = useState<boolean>(false)
 
@@ -18,11 +18,11 @@ export const SearchNotes = React.memo((props: SearchNotesPropsType) => {
             setValue(e.currentTarget.value)
         } else setValue(e)
         setShowAll(false)
-    }, [value, all])
+    }, [value])
     const showAllNotes = useCallback(() => {
         setShowAll(true)
         setValue('')
-    }, [all])
+    }, [])
 
     const filteredNotes = value.trim() !== '' ? props.notes.filter(n => n.body.toLowerCase().includes(value.toLowerCase())) : props.notes
 

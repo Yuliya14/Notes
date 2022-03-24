@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback, useState} from "react";
+import React, {ChangeEvent, useCallback} from "react";
 import {noteType} from "../App";
 import {EditableSpan} from "../EditableSpan/EditableSpan";
 import s from "./Notes.module.scss"
@@ -12,9 +12,6 @@ type NotesPropsType = {
     searchNotes: (e: ChangeEvent<HTMLInputElement> | string) => void
 }
 export const Notes = React.memo((props: NotesPropsType) => {
-    console.log('Notes')
-
-    const [changeMode, setChangeMode] = useState<boolean>(false)
 
     let notes: noteType[]
     props.all ? notes = props.allNotes : notes = props.notes
@@ -22,32 +19,38 @@ export const Notes = React.memo((props: NotesPropsType) => {
     return <div>
         {notes.length > 0
             ? <div className={s.notesContainer}>
-                {
-                    notes.map(n => {
-                            const changeNoteBody = (newNoteBody: string, hashtag: Array<string>) => {
-                                    const currentNote = props.allNotes.find(notes => notes.id === n.id) ? {
-                                        ...n,
-                                        body: newNoteBody,
-                                        hashtag
-                                    } : n
-                                    props.setNotes(props.allNotes.map(n => n.id === currentNote.id ? currentNote : n))
-                            }
-                            const changeNote = () => {
-                                setChangeMode(!changeMode)
-                                changeMode && alert('For change double click on Mote Body')
-                            }
-                            const deleteNote = () => props.setNotes(props.allNotes.filter(notes => notes.id !== n.id))
-                            return <div className={s.noteContainer} key={n.id}>
-                                <EditableSpan note={n} callback={changeNoteBody} setNotes={props.setNotes}
-                                              notes={props.allNotes} searchNotes={props.searchNotes}/>
-                                <div className={s.buttonContainer}>
-                                    <button onClick={changeNote}>Change</button>
-                                    <button onClick={deleteNote}>Delete</button>
-                                </div>
-                            </div>
-                        }
-                    )}
+                {notes.map(n => <Note setNotes={props.setNotes} searchNotes={props.searchNotes}
+                                         allNotes={props.allNotes} currentNote={n}/>)}
             </div>
             : <div style={{textAlign: "center"}}>Add notes</div>}
+    </div>
+})
+
+type NotePropsType = {
+    currentNote: noteType
+    allNotes: noteType[]
+    setNotes: (notes: noteType[]) => void
+    searchNotes: (e: ChangeEvent<HTMLInputElement> | string) => void
+}
+const Note = React.memo((props: NotePropsType) => {
+
+    const changeNoteBody = useCallback((newNoteBody: string, hashtag: Array<string>) => {
+        const currentNote = props.allNotes.find(notes => notes.id === props.currentNote.id) ? {
+            ...props.currentNote,
+            body: newNoteBody,
+            hashtag
+        } : props.currentNote
+        props.setNotes(props.allNotes.map(n => n.id === currentNote.id ? currentNote : n))
+    }, [props])
+    const deleteNote = useCallback(() => {
+        props.setNotes(props.allNotes.filter(notes => notes.id !== props.currentNote.id))
+    }, [props])
+
+    return <div className={s.noteContainer} key={props.currentNote.id}>
+        <div className={s.buttonContainer}>
+            <button onClick={deleteNote}>x</button>
+        </div>
+        <EditableSpan note={props.currentNote} callback={changeNoteBody} setNotes={props.setNotes}
+                      notes={props.allNotes} searchNotes={props.searchNotes}/>
     </div>
 })

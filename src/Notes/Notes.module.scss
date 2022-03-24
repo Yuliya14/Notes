@@ -1,7 +1,6 @@
 .notesContainer {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
     width: 80%;
     margin: 0 auto;
     flex-wrap: wrap;
@@ -15,9 +14,16 @@
         word-wrap: break-word;
         min-height: 130px;
         .buttonContainer {
-            display: flex;
-            position: absolute;
-            margin: 0 auto;
+            padding-left: 190px;
+            button {
+                padding-top: 5px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                width: 45px;
+            }
+        }
+        textarea {
+            max-width: 210px;
         }
     }
 }
